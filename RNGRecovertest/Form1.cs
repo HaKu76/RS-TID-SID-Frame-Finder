@@ -59,7 +59,7 @@ namespace RNGRecovertest
             }
             catch
             {
-                MessageBox.Show("Error: TID entered incorrectly."); // 错误提示
+                MessageBox.Show("错误：TID输入错误"); // 错误提示
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace RNGRecovertest
                 }
                 catch
                 {
-                    MessageBox.Show("Error: PID entered incorrectly."); // 错误提示
+                    MessageBox.Show("错误：PID输入错误"); // 错误提示
                     return;
                 }
                 //显示异色列
@@ -118,7 +118,7 @@ namespace RNGRecovertest
                         }
                     }
                 }
-                // 计算框架和输出结果
+                // 计算帧数和输出结果
                 uint frame;
                 int index = 0;
                 foreach (uint s in origin)
@@ -135,10 +135,10 @@ namespace RNGRecovertest
 
                     uint tempxor = possibileSids[index] ^ tid;
                     uint temptsv = tempxor / 8;
-                    string shiny = "Star"; // 默认闪光状态为 Star
+                    string shiny = "星闪"; // 默认闪光状态为 Star
                     if (tempxor == xor)
                     {
-                        shiny = "Square"; // 如果满足条件，则为 Square
+                        shiny = "方块闪"; // 如果满足条件，则为 Square
                     }
 
                     // 计算时间
@@ -190,7 +190,7 @@ namespace RNGRecovertest
                     string timestring = dt.ToString("ddd MMM d HH:mm:ss yyyy"); // 格式化时间
 
                     // 将结果添加到数据表格中
-                    dataGridView1.Rows.Add(rng.seed.ToString("X4"), frame.ToString(), tid, xor,possibileSids[index++], shiny, timestring);
+                    dataGridView1.Rows.Add(rng.seed.ToString("X4"), frame.ToString(), tid, possibileSids[index++], temptsv, shiny, timestring);
                 }
             }
             else if (radioButton2.Checked)
@@ -201,13 +201,13 @@ namespace RNGRecovertest
                 }
                 catch
                 {
-                    MessageBox.Show("Error: SID entered incorrectly."); // 错误提示
+                    MessageBox.Show("错误：SID输入错误"); // 错误提示
                     return;
                 }
                 //不显示异色列
                 dataGridView1.Columns["Column5"].Visible = false;
                 //计算tsv
-                uint tsv = sid ^ tid;
+                uint tsv = (sid ^ tid) >> 3;
                 string TSIDlow = sid.ToString("X4"); // 将 SID 转换为字符串
                 string TSIDhigh = tid.ToString("X4");
                 string TSID = TSIDhigh + TSIDlow; // 拼接 SID
@@ -324,6 +324,11 @@ namespace RNGRecovertest
             {
                 textBox3.ReadOnly = true;
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
